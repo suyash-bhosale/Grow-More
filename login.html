@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grow More - Login & Signup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #4CAF50;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo p {
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: 25px;
+            background: #f5f5f5;
+            padding: 5px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .tab-btn.active {
+            background: #4CAF50;
+            color: white;
+            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .phone-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .country-code {
+            width: 80px;
+            background: #f5f5f5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-google {
+            background: white;
+            color: #333;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-google:hover {
+            background: #f9f9f9;
+            transform: translateY(-1px);
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            color: #666;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .error-message {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(244, 67, 54, 0.1);
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: #4CAF50;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #4CAF50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .farmer-form {
+            margin-top: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        #recaptcha-container {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="logo">
+            <h1>🌱 Grow More</h1>
+            <p>Empowering Farmers with Analytics</p>
+        </div>
+        
+        <div class="auth-tabs">
+            <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+            <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+        
+        <!-- Login Form -->
+        <div id="login-form" class="auth-form active">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <button id="googleLoginBtn" class="btn btn-google">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continue with Google
+            </button>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <button id="phoneLoginBtn" class="btn btn-primary" style="background: #2196F3;">
+                📱 Login with Phone
+            </button>
+        </div>
+        
+        <!-- Signup Form -->
+        <div id="signup-form" class="auth-form">
+            <form id="signupForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password (min 6 characters)</label>
+                    <input type="password" id="signupPassword" required minlength="6">
+                </div>
+                
+                <!-- Farmer Details -->
+                <div class="farmer-form">
+                    <h3 style="margin-bottom: 15px; color: #333;">Farmer Details</h3>
+                    <div class="form-group">
+                        <label for="farmName">Farm Name</label>
+                        <input type="text" id="farmName" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="farmSize">Farm Size (acres)</label>
+                            <input type="number" id="farmSize" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="farmType">Farm Type</label>
+                            <select id="farmType" style="width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px;">
+                                <option value="crop">Crop Farming</option>
+                                <option value="livestock">Livestock</option>
+                                <option value="mixed">Mixed Farming</option>
+                                <option value="organic">Organic Farming</option>
+                                <option value="dairy">Dairy Farming</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="district">District</label>
+                            <input type="text" id="district" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <div class="phone-input-container">
+                            <input type="text" id="countryCode" class="country-code" value="+91" readonly>
+                            <input type="tel" id="phoneNumber" placeholder="Enter 10-digit number" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <button id="googleSignupBtn" class="btn btn-google">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign up with Google
+            </button>
+        </div>
+        
+        <!-- Phone Authentication Form -->
+        <div id="phone-auth-form" class="auth-form">
+            <h3 style="margin-bottom: 20px;">Phone Authentication</h3>
+            <div class="form-group">
+                <label for="phoneAuthNumber">Phone Number</label>
+                <div class="phone-input-container">
+                    <input type="text" id="phoneCountryCode" class="country-code" value="+91" readonly>
+                    <input type="tel" id="phoneAuthNumber" placeholder="Enter 10-digit number" required>
+                </div>
+            </div>
+            <div id="recaptcha-container"></div>
+            <button id="sendOtpBtn" class="btn btn-primary">Send OTP</button>
+            
+            <div id="otp-section" class="hidden">
+                <div class="form-group">
+                    <label for="otpInput">Enter OTP</label>
+                    <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6">
+                </div>
+                <button id="verifyOtpBtn" class="btn btn-primary">Verify OTP</button>
+            </div>
+            
+            <button id="backToLoginBtn" class="btn" style="background: #666; color: white; margin-top: 10px;">
+                Back to Login
+            </button>
+        </div>
+        
+        <div class="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px;">Processing...</p>
+        </div>
+        
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+    </div>
+ <script>
+// ---- Firebase Firestore Error Handling ----
+function handleFirestoreError(error) {
+  console.error("Firestore error:", error);
+  if (error.code === 'permission-denied') {
+    alert("⚠ Access denied: Please check your Firestore security rules (Firestore -> Rules).");
+  } else if (error.code === 'unavailable') {
+    alert("⚠ Firestore service is temporarily unavailable. Try again later.");
+  } else {
+    alert("An unexpected error occurred while accessing the database.");
+  }
+}
+
+// Wrapper for getDoc calls to ensure safe error handling
+async function safeGetDoc(docRef) {
+  try {
+    return await getDoc(docRef);
+  } catch (error) {
+    handleFirestoreError(error);
+    return null;
+  }
+}
+
+// Example usage for login check
+async function checkUserLogin(userId) {
+  const userDocRef = doc(db, "farmers", userId);
+  const userDocSnap = await safeGetDoc(userDocRef);
+  if (userDocSnap && userDocSnap.exists()) {
+    console.log("User data:", userDocSnap.data());
+    // Proceed with login logic
+  } else if (userDocSnap) {
+    alert("⚠ No user found with the provided details.");
+  }
+}
+</script>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword,
+            signInWithPopup,
+            GoogleAuthProvider,
+            RecaptchaVerifier,
+            signInWithPhoneNumber,
+            updateProfile,
+            onAuthStateChanged
+        } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+        
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDoc,
+            collection,
+            query,
+            where,
+            getDocs,
+            Timestamp 
+        } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        // Add Your Firebase configuration in each .html file*
+        const firebaseConfig = {
+        apiKey: "AIzaSyD9sf4FTIPMC4lEUg4qbYqtlJQ2051fUhs",
+        authDomain: "grow-more-analytics.firebaseapp.com",
+        projectId: "grow-more-analytics",
+        storageBucket: "grow-more-analytics.firebasestorage.app",
+        messagingSenderId: "71384131834",
+        appId: "1:71384131834:web:f1a76a06b8cbe073c28143"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        let recaptchaVerifier;
+        let confirmationResult;
+
+        // Generate unique farmer ID
+        function generateFarmerId() {
+            const timestamp = Date.now().toString();
+            const random = Math.random().toString(36).substring(2, 8);
+            return `FARMER_${timestamp}_${random}`.toUpperCase();
+        }
+
+        // Show/Hide loading
+        function showLoading(show = true) {
+            const loading = document.querySelector('.loading');
+            const forms = document.querySelectorAll('.auth-form');
+            
+            if (show) {
+                loading.style.display = 'block';
+                forms.forEach(form => form.style.display = 'none');
+            } else {
+                loading.style.display = 'none';
+                const activeForm = document.querySelector('.auth-form.active');
+                if (activeForm) activeForm.style.display = 'block';
+            }
+        }
+
+        // Show messages
+        function showMessage(message, isError = true) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            
+            if (isError) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+            } else {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+                errorDiv.style.display = 'none';
+            }
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+                successDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Switch tabs
+        window.switchTab = function(tab) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const forms = document.querySelectorAll('.auth-form');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            forms.forEach(f => f.classList.remove('active'));
+            
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+            document.getElementById(`${tab}-form`).classList.add('active');
+            
+            // Clear messages
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+        }
+
+        // Save farmer data to Firestore
+        async function saveFarmerData(user, additionalData = {}) {
+            try {
+                const farmerId = generateFarmerId();
+                const farmerData = {
+                    farmerId: farmerId,
+                    uid: user.uid,
+                    email: user.email,
+                    firstName: additionalData.firstName || user.displayName?.split(' ')[0] || '',
+                    lastName: additionalData.lastName || user.displayName?.split(' ')[1] || '',
+                    farmName: additionalData.farmName || '',
+                    farmSize: additionalData.farmSize || 0,
+                    farmType: additionalData.farmType || '',
+                    state: additionalData.state || '',
+                    district: additionalData.district || '',
+                    phoneNumber: additionalData.phoneNumber || user.phoneNumber || '',
+                    createdAt: Timestamp.now(),
+                    lastLogin: Timestamp.now(),
+                    authProvider: additionalData.authProvider || 'email',
+                    isActive: true
+                };
+
+                await setDoc(doc(db, 'farmers', user.uid), farmerData);
+                return farmerData;
+            } catch (error) {
+                console.error('Error saving farmer data:', error);
+                throw error;
+            }
+        }
+
+        // Check if user exists in Firestore
+        async function getFarmerData(uid) {
+            try {
+                const docRef = doc(db, 'farmers', uid);
+                const docSnap = await getDoc(docRef);
+                return docSnap.exists() ? docSnap.data() : null;
+            } catch (error) {
+                console.error('Error getting farmer data:', error);
+                return null;
+            }
+        }
+
+        // Handle successful authentication
+        async function handleAuthSuccess(user, additionalData = {}) {
+            try {
+                showLoading(true);
+                
+                // Check if farmer data exists
+                let farmerData = await getFarmerData(user.uid);
+                
+                if (!farmerData) {
+                    // Create new farmer profile
+                    farmerData = await saveFarmerData(user, additionalData);
+                    showMessage(`Welcome ${farmerData.firstName}! Your Farmer ID: ${farmerData.farmerId}`, false);
+                } else {
+                    // Update last login
+                    await setDoc(doc(db, 'farmers', user.uid), { 
+                        lastLogin: Timestamp.now() 
+                    }, { merge: true });
+                    showMessage(`Welcome back, ${farmerData.firstName}!`, false);
+                }
+
+                // Redirect to dashboard after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html'; // Replace with your dashboard URL
+                }, 2000);
+
+            } catch (error) {
+                showLoading(false);
+                showMessage('Error creating profile: ' + error.message);
+            }
+        }
+
+        // Email/Password Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading(true);
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                await handleAuthSuccess(userCredential.user, { authProvider: 'email' });
+            } catch (error) {
+                showLoading(false);
+                showMessage(getErrorMessage(error.code));
+            }
+        });
+
+        // Email/Password Signup
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading(true);
+            
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const farmName = document.getElementById('farmName').value;
+            const farmSize = document.getElementById('farmSize').value;
+            const farmType = document.getElementById('farmType').value;
+            const state = document.getElementById('state').value;
+            const district = document.getElementById('district').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                
+                // Update display name
+                await updateProfile(userCredential.user, {
+                    displayName: `${firstName} ${lastName}`
+                });
+
+                const additionalData = {
+                    firstName,
+                    lastName,
+                    farmName,
+                    farmSize: parseFloat(farmSize),
+                    farmType,
+                    state,
+                    district,
+                    phoneNumber: `+91${phoneNumber}`,
+                    authProvider: 'email'
+                };
+
+                await handleAuthSuccess(userCredential.user, additionalData);
+            } catch (error) {
+                showLoading(false);
+                showMessage(getErrorMessage(error.code));
+            }
+        });
+
+        // Google Sign-In (Login)
+        document.getElementById('googleLoginBtn').addEventListener('click', async () => {
+            showLoading(true);
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                await handleAuthSuccess(result.user, { authProvider: 'google' });
+            } catch (error) {
+                showLoading(false);
+                showMessage(getErrorMessage(error.code));
+            }
+        });
+
+        // Google Sign-In (Signup)
+        document.getElementById('googleSignupBtn').addEventListener('click', async () => {
+            showLoading(true);
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                await handleAuthSuccess(result.user, { authProvider: 'google' });
+            } catch (error) {
+                showLoading(false);
+                showMessage(getErrorMessage(error.code));
+            }
+        });
+
+        // Phone Authentication
+        document.getElementById('phoneLoginBtn').addEventListener('click', () => {
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById('phone-auth-form').classList.add('active');
+            
+            // Initialize recaptcha
+            if (!recaptchaVerifier) {
+                recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                    'size': 'normal',
+                    'callback': () => {
+                        document.getElementById('sendOtpBtn').disabled = false;
+                    }
+                });
+            }
+            recaptchaVerifier.render();
+        });
+
+        // Send OTP
+        document.getElementById('sendOtpBtn').addEventListener('click', async () => {
+            const phoneNumber = `+91${document.getElementById('phoneAuthNumber').value}`;
+            
+            if (!/^\+91\d{10}$/.test(phoneNumber)) {
+                showMessage('Please enter a valid 10-digit phone number');
+                return;
+            }
+
+            showLoading(true);
+            try {
+                confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
+                showLoading(false);
+                showMessage('OTP sent successfully!', false);
+                document.getElementById('otp-section').classList.remove('hidden');
+                document.getElementById('sendOtpBtn').style.display = 'none';
+            } catch (error) {
+                showLoading(false);
+                showMessage(getErrorMessage(error.code));
+                recaptchaVerifier.render();
+            }
+        });
+
+        // Verify OTP
+        document.getElementById('verifyOtpBtn').addEventListener('click', async () => {
+            const otp = document.getElementById('otpInput').value;
+            
+            if (otp.length !== 6) {
+                showMessage('Please enter a valid 6-digit OTP');
+                return;
+            }
+
+            showLoading(true);
+            try {
+                const result = await confirmationResult.confirm(otp);
+                const phoneNumber = result.user.phoneNumber;
+                await handleAuthSuccess(result.user, { 
+                    phoneNumber, 
+                    authProvider: 'phone' 
+                });
+            } catch (error) {
+                showLoading(false);
+                showMessage('Invalid OTP. Please try again.');
+            }
+        });
+
+        // Back to login
+        document.getElementById('backToLoginBtn').addEventListener('click', () => {
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById('login-form').classList.add('active');
+            
+            // Reset phone auth
+            document.getElementById('otp-section').classList.add('hidden');
+            document.getElementById('sendOtpBtn').style.display = 'block';
+            document.getElementById('phoneAuthNumber').value = '';
+            document.getElementById('otpInput').value = '';
+        });
+
+        // Error message helper
+        function getErrorMessage(errorCode) {
+            const errorMessages = {
+                'auth/user-not-found': 'No account found with this email.',
+                'auth/wrong-password': 'Incorrect password.',
+                'auth/email-already-in-use': 'An account with this email already exists.',
+                'auth/weak-password': 'Password should be at least 6 characters.',
+                'auth/invalid-email': 'Please enter a valid email address.',
+                'auth/too-many-requests': 'Too many failed attempts. Please try again later.',
+                'auth/popup-closed-by-user': 'Sign-in cancelled.',
+                'auth/invalid-phone-number': 'Please enter a valid phone number.',
+                'auth/missing-phone-number': 'Phone number is required.',
+                'auth/quota-exceeded': 'SMS quota exceeded. Please try again later.',
+                'auth/invalid-verification-code': 'Invalid verification code.',
+                'auth/code-expired': 'Verification code has expired.'
+            };
+            
+            return errorMessages[errorCode] || 'An error occurred. Please try again.';
+        }
+
+        // Auth state listener
+        onAuthStateChanged(auth, async (user) => {
+            if (user && window.location.pathname.includes('login.html')) {
+                // User is signed in, check if they have complete profile
+                const farmerData = await getFarmerData(user.uid);
+                if (farmerData) {
+                    // Redirect to dashboard if already logged in
+                    window.location.href = 'dashboard.html';
+                }
+            }
+        });
+
+        // Form validation
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').substring(0, 10);
+        });
+
+        document.getElementById('phoneAuthNumber').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').substring(0, 10);
+        });
+
+        document.getElementById('otpInput').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').substring(0, 6);
+        });
+
+        // Auto-focus next input for OTP
+        document.getElementById('otpInput').addEventListener('keyup', function(e) {
+            if (this.value.length === 6) {
+                document.getElementById('verifyOtpBtn').focus();
+            }
+        });
+
+        // Password strength indicator
+        document.getElementById('signupPassword').addEventListener('input', function(e) {
+            const password = this.value;
+            const strength = getPasswordStrength(password);
+            
+            // Remove existing strength indicator
+            const existing = this.parentNode.querySelector('.password-strength');
+            if (existing) existing.remove();
+            
+            if (password.length > 0) {
+                const strengthDiv = document.createElement('div');
+                strengthDiv.className = 'password-strength';
+                strengthDiv.style.cssText = 'margin-top: 5px; font-size: 12px;';
+                
+                const colors = { weak: '#f44336', medium: '#ff9800', strong: '#4CAF50' };
+                strengthDiv.style.color = colors[strength];
+                strengthDiv.textContent = `Password strength: ${strength.toUpperCase()}`;
+                
+                this.parentNode.appendChild(strengthDiv);
+            }
+        });
+
+        function getPasswordStrength(password) {
+            if (password.length < 6) return 'weak';
+            
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (/[A-Z]/.test(password)) score++;
+            if (/[0-9]/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+            
+            if (score <= 1) return 'weak';
+            if (score <= 2) return 'medium';
+            return 'strong';
+        }
+
+        // Make functions globally available
+        window.auth = auth;
+        window.db = db;
+        window.getFarmerData = getFarmerData;
+        window.saveFarmerData = saveFarmerData;
+
+    </script>
+</body>
+</html>

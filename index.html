@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grow More Analytics - Smart Farming Revolution</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #0f1419 0%, #1a365d 50%, #2a4a6b 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+            animation: satelliteOrbit 30s linear infinite;
+        }
+
+        .satellite-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g opacity="0.6"><circle cx="200" cy="150" r="2" fill="%2322c55e" filter="url(%23glow)"><animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/></circle><circle cx="800" cy="200" r="1.5" fill="%233b82f6" filter="url(%23glow)"><animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite"/></circle><circle cx="1000" cy="400" r="2.5" fill="%2310b981" filter="url(%23glow)"><animate attributeName="opacity" values="0.2;0.8;0.2" dur="5s" repeatCount="indefinite"/></circle><path d="M100,300 Q300,250 500,300 T900,300" stroke="%2322c55e" stroke-width="1" fill="none" opacity="0.3"><animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="8s" repeatCount="indefinite"/></path></g></svg>') no-repeat;
+            background-size: cover;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes satelliteOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        .navbar {
+            background: rgba(15, 20, 25, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 20, 25, 0.98) !important;
+            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.1);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #22c55e 50%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { 
+                filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.3));
+            }
+            to { 
+                filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.6));
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #22c55e, #10b981);
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+            animation: fadeInUp 1s ease-out 0.6s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.4);
+            color: white;
+        }
+
+        .floating-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.1);
+            transition: all 0.3s ease;
+            animation: slideInUp 0.8s ease-out both;
+        }
+
+        .floating-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(34, 197, 94, 0.15);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .floating-card:nth-child(1) { animation-delay: 0.2s; }
+        .floating-card:nth-child(2) { animation-delay: 0.4s; }
+        .floating-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            animation: iconFloat 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .feature-icon.green {
+            background: linear-gradient(135deg, #22c55e, #10b981);
+            color: white;
+        }
+
+        .feature-icon.blue {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .feature-icon.satellite {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1f2937;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #22c55e, #10b981);
+            border-radius: 2px;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 100px 0;
+            position: relative;
+            color: white;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400"><defs><linearGradient id="grid" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%2322c55e;stop-opacity:0.1" /><stop offset="100%" style="stop-color:%2310b981;stop-opacity:0.05" /></linearGradient></defs><pattern id="smallGrid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="url(%23grid)" stroke-width="0.5"/></pattern><rect width="100%" height="100%" fill="url(%23smallGrid)" /></svg>');
+            opacity: 0.3;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            animation: countUp 2s ease-out both;
+            position: relative;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #22c55e;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: 1px solid rgba(34, 197, 94, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #22c55e, #10b981);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .article-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(34, 197, 94, 0.15);
+        }
+
+        .article-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 80px 0 40px;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.5), transparent);
+        }
+
+        .footer a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #22c55e;
+            transform: translateX(5px);
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            animation: pulse 2s infinite;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #22c55e !important;
+            text-decoration: none;
+        }
+
+        .logo-animated {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        .logo-animated::before {
+            content: '🌱';
+            font-size: 1.8rem;
+            animation: leafGrow 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.6));
+        }
+
+        @keyframes logoGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+                transform: scale(1);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(34, 197, 94, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes leafGrow {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            25% {
+                transform: scale(1.1) rotate(2deg);
+            }
+            75% {
+                transform: scale(1.1) rotate(-2deg);
+            }
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #22c55e, #10b981);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+            color: white;
+        }
+
+        .education-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+            padding: 100px 0;
+        }
+
+        .education-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="dots" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="2" fill="%2322c55e" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23dots)"/></svg>');
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .logo-animated {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="logo-animated">Grow More Analytics</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a href="login.html" class="login-btn">
+                    <i class="fas fa-satellite me-2"></i>Get Started
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section d-flex align-items-center">
+        <div class="satellite-overlay"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Satellite-Powered Agriculture</h1>
+                        <p class="hero-subtitle">
+                            Revolutionize your farming with real-time satellite monitoring, 
+                            AI-driven crop analysis, and precision agriculture insights from space
+                        </p>
+                        <div class="text-center">
+                            <a href="login.html" class="cta-button">
+                                <i class="fas fa-satellite-dish"></i>
+                                Launch Your Farm Intelligence
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5" style="margin-top: -100px; position: relative; z-index: 10;">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="floating-card text-center">
+                        <div class="feature-icon green">
+                            <i class="fas fa-satellite"></i>
+                        </div>
+                        <h4 class="h4 font-bold mb-3">Satellite Crop Monitoring</h4>
+                        <p class="text-gray-600">
+                            Real-time NDVI, SAVI, and multispectral analysis from space for 
+                            precise crop health assessment and early disease detection
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="floating-card text-center">
+                        <div class="feature-icon blue">
+                            <i class="fas fa-cloud-rain"></i>
+                        </div>
+                        <h4 class="h4 font-bold mb-3">Weather & Water Intelligence</h4>
+                        <p class="text-gray-600">
+                            NDWI-based irrigation optimization with weather forecasting 
+                            and soil moisture monitoring from satellite data
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="floating-card text-center">
+                        <div class="feature-icon satellite">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h4 class="h4 font-bold mb-3">Global Farm Intelligence</h4>
+                        <p class="text-gray-600">
+                            Comprehensive satellite-based reporting with field mapping, 
+                            yield prediction, and data-driven farming recommendations
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <h2 class="section-title text-white">Trusted by Farmers Worldwide</h2>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="15000">0</div>
+                        <div class="stat-label">Active Farmers</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="85000">0</div>
+                        <div class="stat-label">Acres Monitored</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="35">0</div>
+                        <div class="stat-label">% Yield Increase</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="45">0</div>
+                        <div class="stat-label">% Water Savings</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Farmer Education Hub Section -->
+    <section class="education-section">
+        <div class="container">
+            <h2 class="section-title">Farmer Education Hub</h2>
+            <p class="text-center text-gray-600 mb-5 fs-5">
+                Learn advanced farming techniques powered by satellite technology and precision agriculture
+            </p>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="article-card">
+                        <div class="article-icon green">
+                            <i class="fas fa-satellite-dish"></i>
+                        </div>
+                        <h4 class="h5 font-bold mb-3">Satellite Crop Health Monitoring</h4>
+                        <p class="text-gray-600 mb-4">
+                            Master the use of NDVI, NDRE, and SAVI indices from satellite imagery 
+                            to detect crop stress, diseases, and nutrient deficiencies before they 
+                            become visible to the naked eye.
+                        </p>
+                        <div class="mb-3">
+                            <span class="badge bg-success me-2">Beginner</span>
+                            <span class="badge bg-outline-secondary">15 min read</span>
+                        </div>
+                        <a href="#" class="text-green-600 font-semibold">
+                            <i class="fas fa-book-reader me-2"></i>Read Full Guide →
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="article-card">
+                        <div class="article-icon blue">
+                            <i class="fas fa-cloud-rain"></i>
+                        </div>
+                        <h4 class="h5 font-bold mb-3">Precision Irrigation with Satellite Data</h4>
+                        <p class="text-gray-600 mb-4">
+                            Learn how to use NDWI (Normalized Difference Water Index) and thermal 
+                            satellite data to optimize irrigation schedules, reduce water waste, 
+                            and improve crop yields through precision water management.
+                        </p>
+                        <div class="mb-3">
+                            <span class="badge bg-warning text-dark me-2">Intermediate</span>
+                            <span class="badge bg-outline-secondary">20 min read</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-semibold">
+                            <i class="fas fa-tint me-2"></i>Learn Irrigation Techniques →
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="article-card">
+                        <div class="article-icon satellite">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h4 class="h5 font-bold mb-3">Variable Rate Application Using Maps</h4>
+                        <p class="text-gray-600 mb-4">
+                            Discover how to create and use prescription maps from satellite data 
+                            for variable rate application of fertilizers, seeds, and pesticides, 
+                            maximizing efficiency and reducing input costs.
+                        </p>
+                        <div class="mb-3">
+                            <span class="badge bg-danger me-2">Advanced</span>
+                            <span class="badge bg-outline-secondary">25 min read</span>
+                        </div>
+                        <a href="#" class="text-purple-600 font-semibold">
+                            <i class="fas fa-map me-2"></i>Explore VRA Techniques →
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="article-card">
+                        <div class="article-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                            <i class="fas fa-chart-area"></i>
+                        </div>
+                        <h4 class="h5 font-bold mb-3">Yield Prediction & Harvest Planning</h4>
+                        <p class="text-gray-600 mb-4">
+                            Utilize historical satellite data, weather patterns, and AI models 
+                            to predict crop yields accurately, plan harvest logistics, and 
+                            make informed marketing decisions.
+                        </p>
+                        <div class="mb-3">
+                            <span class="badge bg-success me-2">Beginner</span>
+                            <span class="badge bg-outline-secondary">18 min read</span>
+                        </div>
+                        <a href="#" class="text-orange-600 font-semibold">
+                            <i class="fas fa-calculator me-2"></i>Learn Yield Prediction →
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="article-card">
+                        <div class="article-icon" style="background: linear-gradient(135deg, #ec4899, #be185d);">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <h4 class="h5 font-bold mb-3">Early Pest & Disease Detection</h4>
+                        <p class="text-gray-600 mb-4">
+                            Learn to identify early signs of pest infestations and plant diseases 
+                            using multispectral satellite imagery and thermal analysis for 
+                            proactive crop protection strategies.
+                        </p>
+                        <div class="mb-3">
+                            <span class="badge bg-warning text-dark me-2">Intermediate</span>
+                            <span class="badge bg-outline-secondary">22 min read</span>
+                        </div>
+                        <a href="#" class="text-pink-600 font-semibold">
+                            <i class="fas fa-shield-alt me-2"></i>Master Pest Detection →
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="article-card">
+                        <div class="article-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h4 class="h5 font-bold mb-3">Soil Health Analysis from Space</h4>
+                        <p class="text-gray-600 mb-4">
+                            Understand how satellite data can reveal soil composition, organic matter 
+                            content, and nutrient levels to optimize fertilization programs and 
+                            improve long-term soil health management.
+                        </p>
+                        <div class="mb-3">
+                            <span class="badge bg-danger me-2">Advanced</span>
+                            <span class="badge bg-outline-secondary">30 min read</span>
+                        </div>
+                        <a href="#" class="text-cyan-600 font-semibold">
+                            <i class="fas fa-microscope me-2"></i>Analyze Soil Health →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="#" class="btn btn-outline-success btn-lg px-5 py-3">
+                    <i class="fas fa-graduation-cap me-2"></i>
+                    Explore All Educational Resources
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="logo-animated fs-4 fw-bold text-success">Grow More Analytics</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        Empowering farmers worldwide with cutting-edge satellite technology 
+                        for sustainable, profitable, and precision agriculture.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-gray-300 fs-5 hover:text-success">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 fs-5 hover:text-success">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 fs-5 hover:text-success">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 fs-5 hover:text-success">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="h5 font-semibold mb-4 text-success">Platform</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#features" class="text-gray-300">Features</a></li>
+                        <li class="mb-2"><a href="#satellite-monitoring" class="text-gray-300">Satellite Monitoring</a></li>
+                        <li class="mb-2"><a href="#crop-analytics" class="text-gray-300">Crop Analytics</a></li>
+                        <li class="mb-2"><a href="#weather-data" class="text-gray-300">Weather Intelligence</a></li>
+                        <li class="mb-2"><a href="#yield-prediction" class="text-gray-300">Yield Prediction</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="h5 font-semibold mb-4 text-success">Resources</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#education-hub" class="text-gray-300">Education Hub</a></li>
+                        <li class="mb-2"><a href="#case-studies" class="text-gray-300">Case Studies</a></li>
+                        <li class="mb-2"><a href="#webinars" class="text-gray-300">Webinars</a></li>
+                        <li class="mb-2"><a href="#documentation" class="text-gray-300">API Documentation</a></li>
+                        <li class="mb-2"><a href="#blog" class="text-gray-300">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="h5 font-semibold mb-4 text-success">Company</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#about" class="text-gray-300">About Us</a></li>
+                        <li class="mb-2"><a href="#careers" class="text-gray-300">Careers</a></li>
+                        <li class="mb-2"><a href="#partners" class="text-gray-300">Partners</a></li>
+                        <li class="mb-2"><a href="#press" class="text-gray-300">Press</a></li>
+                        <li class="mb-2"><a href="#contact" class="text-gray-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="h5 font-semibold mb-4 text-success">Support</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#help-center" class="text-gray-300">Help Center</a></li>
+                        <li class="mb-2"><a href="#customer-support" class="text-gray-300">Customer Support</a></li>
+                        <li class="mb-2"><a href="#training" class="text-gray-300">Training</a></li>
+                        <li class="mb-2"><a href="#status" class="text-gray-300">System Status</a></li>
+                        <li class="mb-2"><a href="#privacy" class="text-gray-300">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(34, 197, 94, 0.2);">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-gray-300 mb-0">© 2025 Grow More Analytics. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="d-flex justify-content-md-end gap-3">
+                        <span class="text-gray-300">
+                            <i class="fas fa-phone me-2 text-success"></i>+91 98765 43210
+                        </span>
+                        <span class="text-gray-300">
+                            <i class="fas fa-envelope me-2 text-success"></i>support@growmoreanalytics.com
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/919876543210" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Counter animation
+        const animateCounters = () => {
+            const counters = document.querySelectorAll('[data-count]');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const updateCounter = () => {
+                    current += step;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current).toLocaleString();
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target.toLocaleString();
+                    }
+                };
+                
+                updateCounter();
+            });
+        };
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.querySelector('[data-count]')) {
+                        animateCounters();
+                    }
+                    // Add animation classes for cards
+                    entry.target.querySelectorAll('.article-card, .floating-card').forEach((card, index) => {
+                        setTimeout(() => {
+                            card.style.animationDelay = `${index * 0.1}s`;
+                            card.classList.add('animate-in');
+                        }, index * 100);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections
+        document.querySelectorAll('.stats-section, .education-section, section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.satellite-overlay');
+            const speed = scrolled * 0.5;
+            
+            if (parallax) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+
+        // Article card hover effects
+        document.querySelectorAll('.article-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add typing effect to hero title
+        const heroTitle = document.querySelector('.hero-title');
+        if (heroTitle) {
+            const text = heroTitle.textContent;
+            heroTitle.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < text.length) {
+                    heroTitle.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            setTimeout(typeWriter, 1000);
+        }
+    </script>
+</body>
+</html>

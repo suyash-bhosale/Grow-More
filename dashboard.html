@@ -136,7 +136,7 @@
 
   // Convert [[lng, lat], [lng, lat], ...] → [{lng, lat}, ...]
   const parsedCoords = JSON.parse(coordinates);
-  const boundary = parsedCoords.map(([lng, lat]) => ({ lat, lng }));
+  const boundary = parsedCoords.map(([lng, lat]) => ({ lng, lat }));
 
   const farmData = {
     farmerName,

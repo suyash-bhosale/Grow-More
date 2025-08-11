@@ -6,3 +6,6 @@ google-auth
 requests
 python-dotenv
 reportlab
+gunicorn
+
+

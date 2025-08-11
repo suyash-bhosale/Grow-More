@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: grow-more-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PORT
+        value: 8080

@@ -5,3 +5,5 @@ earthengine-api==0.1.381
 google-cloud-firestore==2.11.1
 reportlab==4.0.4
 gunicorn==21.2.0
+python-dotenv==1.0.0
+requests==2.31.0

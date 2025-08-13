@@ -5,16 +5,27 @@ import ee
 import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Initialize Firebase
-cred = credentials.Certificate('serviceAccount.json')
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+try:
+    cred = credentials.Certificate('serviceAccount.json')
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
+except Exception as e:
+    print(f"Warning: Firebase initialization failed: {e}")
+    db = None
 
 # Initialize Earth Engine
-service_account = 'firebase-adminsdk-fbsvc@grow-more-analytics.iam.gserviceaccount.com'
-ee_credentials = ee.ServiceAccountCredentials(service_account, 'serviceAccount.json')
-ee.Initialize(ee_credentials)
+try:
+    service_account = 'firebase-adminsdk-fbsvc@grow-more-analytics.iam.gserviceaccount.com'
+    ee_credentials = ee.ServiceAccountCredentials(service_account, 'serviceAccount.json')
+    ee.Initialize(ee_credentials)
+except Exception as e:
+    print(f"Warning: Earth Engine initialization failed: {e}")
 
 # Import utilities after initialization
 from firestore_utils import get_farm_data
@@ -28,6 +39,9 @@ CORS(app)
 @app.route('/get-indices/<farmer_id>', methods=['GET'])
 def get_indices(farmer_id):
     try:
+        if db is None:
+            return jsonify({'error': 'Database connection not available'}), 500
+            
         farm_data = get_farm_data(farmer_id, db)
         if not farm_data:
             return jsonify({'error': 'Farm data not found'}), 404
@@ -45,6 +59,9 @@ def get_indices(farmer_id):
 @app.route('/generate-report/<farmer_id>', methods=['GET'])
 def generate_report(farmer_id):
     try:
+        if db is None:
+            return jsonify({'error': 'Database connection not available'}), 500
+            
         farm_data = get_farm_data(farmer_id, db)
         if not farm_data:
             return jsonify({'error': 'Farm data not found'}), 404

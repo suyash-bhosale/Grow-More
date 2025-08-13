@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, render_template, redirect, url_for
 from flask_cors import CORS
 import os
 import ee
@@ -28,12 +28,12 @@ except Exception as e:
     print(f"Warning: Earth Engine initialization failed: {e}")
 
 # Import utilities after initialization
-from firestore_utils import get_farm_data
+from firestore_utils import get_farm_data, save_farm_data
 from gee_utils import calculate_indices
 from gemini_utils import generate_farm_advisory
 from report_generator import create_report_pdf
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.', static_folder='.')
 CORS(app)
 
 @app.route('/get-indices/<farmer_id>', methods=['GET'])
@@ -87,8 +87,47 @@ def generate_report(farmer_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/save-farm', methods=['POST'])
+def save_farm():
+    try:
+        if db is None:
+            return jsonify({'error': 'Database connection not available'}), 500
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        
+        success = save_farm_data(data, db)
+        if success:
+            return jsonify({'message': 'Farm data saved successfully', 'farmer_id': data.get('phone')})
+        else:
+            return jsonify({'error': 'Failed to save farm data'}), 500
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/')
 def home():
+    return render_template('index.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/monitoring')
+def monitoring():
+    return render_template('monitoring.html')
+
+@app.route('/monitoring/<farmer_id>')
+def monitoring_farmer(farmer_id):
+    return render_template('monitoring.html')
+
+@app.route('/health')
+def health():
     return 'Grow More Analytics Backend is Active ✅'
 
 if __name__ == '__main__':
